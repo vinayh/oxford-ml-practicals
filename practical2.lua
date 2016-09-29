@@ -1,3 +1,6 @@
+-- loss with 10^5 epochs: 1.3879800893892
+-- 10^4 epochs: 1.5820711927143
+-- 10^3 epochs: 14.127163932121
 ----------------------------------------------------------------------
 -- example-linear-regression.lua
 --
@@ -182,7 +185,8 @@ sgd_params = {
 -- but should typically be determinined using cross-validation.
 
 -- we cycle 1e4 times over our training data
-for i = 1,1e4 do
+num_epochs = 1e4
+for i = 1,num_epochs do
 
    -- this variable is used to estimate the average loss
    current_loss = 0
@@ -214,7 +218,7 @@ for i = 1,1e4 do
 
    logger:add{['training error'] = current_loss}
    logger:style{['training error'] = '-'}
-   logger:plot()
+  --  logger:plot()
 end
 
 ----------------------------------------------------------------------
@@ -231,8 +235,14 @@ end
 
 text = {40.32, 42.92, 45.33, 48.85, 52.37, 57, 61.82, 69.78, 72.19, 79.42}
 
-print('id  approx   text')
-for i = 1,(#data)[1] do
-   local myPrediction = model:forward(data[i][{{2,3}}])
-   print(string.format("%2d  %6.2f %6.2f", i, myPrediction[1], text[i]))
+dataTest = torch.Tensor{
+{6, 4},
+{10, 5},
+{14, 8}
+}
+
+print('id  approx')
+for i = 1,(#dataTest)[1] do
+   local myPrediction = model:forward(dataTest[i][{{1,2}}])
+   print(string.format("%2d  %6.2f", i, myPrediction[1]))
 end
